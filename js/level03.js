@@ -1,6 +1,6 @@
 function Level() {
 
-    this.current = 1;
+    this.current = 3;
     this.bkgdImage1 = 'bkg-mointains01.png';
     this.bkgdImage2 = 'bkg-mointains02.png';
     this.loadMapArr = loadMapArr;
