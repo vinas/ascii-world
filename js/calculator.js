@@ -30,9 +30,9 @@ function Calculator() {
         return enemies.find(enemy => isVisible(enemy) && areTouching(bullet, enemy)) || false;
     }
 
+    // Numeric value of an inline style length such as '12.5%'
     function getCoord(coord) {
-        if (coord === '') return 0;
-        return parseFloat(coord.match(/[+-]?\d+(\.\d+)?/g).map(v => parseFloat(v)));
+        return parseFloat(coord) || 0;
     }
 
     function jumpFloorBase() {
