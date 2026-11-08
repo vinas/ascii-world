@@ -215,7 +215,7 @@ function Setup() {
     }
 
     function preloadImages(images) {
-        var img;
+        var img, i;
         for (i = 0; i < images.length; i++) {
             img = new Image();
             img.src = images[i];

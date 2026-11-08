@@ -414,8 +414,8 @@ function Display() {
                     return;
                 }
                 if (hit = calc.hitEnemy(bullet)) {
-                    temp = (direction) ? left : left - 15;
-                    explosion(temp, top);
+                    var explosionLeft = (direction) ? left : left - 15;
+                    explosion(explosionLeft, top);
                     if (hit.id != 'bigBoss') {
                         hide(hit.id);
                     } else {
