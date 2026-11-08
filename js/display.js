@@ -701,14 +701,14 @@ function Display() {
     function at(el, left, top) {
         if (el) {
             el.style.opacity = 1;
-            if (left) el.style.left = left+'%';
-            if (top) el.style.top = top+'%';
+            if (typeof left === 'number') el.style.left = left+'%';
+            if (typeof top === 'number') el.style.top = top+'%';
             el.style.display = 'block';
         }
     }
 
     function moveVertically(el, top) {
-        if (el && top) el.style.top = top+'%';
+        if (el && typeof top === 'number') el.style.top = top+'%';
     }
 
     function levelScore() {
