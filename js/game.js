@@ -9,6 +9,7 @@ function Game() {
 
     function init() {
         setup.enableKeyboard();
+        setup.enableTouchControls();
         setup.preventDblClick();
         setup.loadContent();
         display.showGame();

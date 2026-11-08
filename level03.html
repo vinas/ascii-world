@@ -31,32 +31,20 @@
             <div id="boom" class="hidable"><img src="" id="boomImg" /></div>
 
             <div class="controller">
-                <div id="btnAttack" class="btn forceRight fire"
-                    ontouchstart="events.tapAttack()"
-                    ontouchend="events.tapStop('btnAttack')">
-                </div>
-                <div id="btnJump" class="btn forceRight jump"
-                    ontouchstart="events.tapJump()"
-                    ontouchend="events.tapStop('btnJump')">
-                </div>
-                <div id="btnLeft" class="btn forceLeft moveLeft"
-                    ontouchstart="events.tapMoveLeft()"
-                    ontouchend="events.tapStop('btnLeft')">
-                </div>
-                <div id="btnRight" class="btn forceLeft moveRight"
-                    ontouchstart="events.tapMoveRight()"
-                    ontouchend="events.tapStop('btnRight')">
-                </div>
+                <div id="btnAttack" class="btn forceRight fire"></div>
+                <div id="btnJump" class="btn forceRight jump"></div>
+                <div id="btnLeft" class="btn forceLeft moveLeft"></div>
+                <div id="btnRight" class="btn forceLeft moveRight"></div>
             </div>
         </div>
-        <div id="startGame" onclick="game.init()"><img src="img/game-start.gif" class="startGameImg" /></div>
-        <div id="gameOver" onclick="events.reset()">
+        <div id="startGame"><img src="img/game-start.gif" class="startGameImg" /></div>
+        <div id="gameOver">
             <label>Estágio alcançado: </label>
             <label id="lastStage"></label><br/>
             <label>Tempo Total: </label>
             <label id="gameTime"></label>
         </div>
-        <div id="levelScore" onclick="game.nextLevel()">
+        <div id="levelScore">
             <label>Estágio alcançado: </label>
             <label id="levelScoreStage"></label><br/>
             <label>Tempo Total: </label>

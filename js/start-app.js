@@ -8,6 +8,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     dialogs = (typeof Dialogs !== 'undefined') ? Dialogs() : false;
     game = Game();
 
-    //game.init();
+    setup.bindScreenButtons();
 
 });

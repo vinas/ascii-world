@@ -3,6 +3,8 @@ function Setup() {
     this.resetGame = resetGame;
     this.hideHidables = hideHidables;
     this.enableKeyboard = enableKeyboard;
+    this.enableTouchControls = enableTouchControls;
+    this.bindScreenButtons = bindScreenButtons;
     this.preventDblClick = preventDblClick;
     this.setClassProp = setClassProp;
     this.loadContent = loadContent;
@@ -99,6 +101,27 @@ function Setup() {
                 }
             }, 50);
         });
+    }
+
+    function enableTouchControls() {
+        var buttons = {
+                btnAttack: events.tapAttack,
+                btnJump: events.tapJump,
+                btnLeft: events.tapMoveLeft,
+                btnRight: events.tapMoveRight
+            };
+
+        Object.keys(buttons).forEach(function(id) {
+            var btn = document.getElementById(id);
+            btn.addEventListener('touchstart', buttons[id]);
+            btn.addEventListener('touchend', function() { events.tapStop(id); });
+        });
+    }
+
+    function bindScreenButtons() {
+        document.getElementById('startGame').addEventListener('click', game.init);
+        document.getElementById('gameOver').addEventListener('click', events.reset);
+        document.getElementById('levelScore').addEventListener('click', game.nextLevel);
     }
 
     function resetGame() {
