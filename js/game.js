@@ -40,12 +40,14 @@ function Game() {
         setTimeout(gameLoop, 15);
     }
 
+    // Whole seconds since the current game started, refreshed several times
+    // a second so the HUD doesn't lag behind when a game restarts mid-second
     function gameClock() {
         if (gameOn) {
-            timer += 1;
+            timer = Math.floor((Date.now() - time) / 1000);
             screens.updateTime();
         }
-        setTimeout(gameClock, 1000);
+        setTimeout(gameClock, 250);
     }
 
     function handleFiring() {

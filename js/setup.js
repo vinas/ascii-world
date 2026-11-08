@@ -27,6 +27,7 @@ function Setup() {
         sounds.playFromStart('music');
         levelMap.hideHidables();
         resetGameVariables();
+        screens.updateTime();
         cancelAllActions();
         cancelAllCommands();
         charman.reset();
