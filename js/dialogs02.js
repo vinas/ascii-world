@@ -8,7 +8,7 @@ function Dialogs() {
 
     return this;
 
-    function start(el, level, screen) {
+    function start() {
         display.freezeChar();
         dialogBalloon(pig, "Hey, wait a moment! DON'T SHOOT!", dialog021001);
     }

@@ -75,10 +75,6 @@ html, body {
     display: none;
 }
 
-#fragile {
-    opacity: 1;
-}
-
 #alien {
     width: 4%;
     height: 14%;
@@ -127,12 +123,7 @@ html, body {
 }
 
 .floor {
-    padding-top: auto;
     position: absolute;
-}
-
-.firstFloor {
-    top: 10%;
 }
 
 .single {
@@ -186,10 +177,6 @@ html, body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 80% 100%;
-}
-
-.btnShoot {
-    float: right;
 }
 
 .forceRight {

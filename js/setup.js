@@ -224,7 +224,6 @@ function Setup() {
 
     function setSounds() {
         musicTheme = new Audio('audio/alien-cat.mp3');
-        levelEndTheme = new Audio('audio/alien-cat.mp3');
         nextLevelTheme = new Audio('audio/level-end-autumn-leaves.mp3');
         charJumpSound = new Audio('audio/jump.mp3');
         ufoLaserSound = new Audio('audio/tir.mp3');

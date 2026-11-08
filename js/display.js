@@ -314,10 +314,6 @@ function Display() {
         if (callback) callback(el);
     }
 
-    function variateOpacity() {
-        
-    }
-
     function abducted(el) {
         abductionRay.style.display = 'none';
         setTimeout(function() {
@@ -692,7 +688,7 @@ function Display() {
 
     function millisToMinutesAndSeconds(millis) {
         var date = new Date(millis);
-        return date.getUTCMinutes() + ':' + addZero(date.getUTCSeconds(), 2) + ':' + date.getUTCMilliseconds();
+        return date.getUTCMinutes() + ':' + addZero(date.getUTCSeconds()) + ':' + date.getUTCMilliseconds();
     }
 
     function addZero(i) {
@@ -722,7 +718,7 @@ function Display() {
         document.getElementById('levelScore').style.display = 'block';
     }
 
-    async function explosion(left, top) {
+    function explosion(left, top) {
         var boomImg = document.getElementById('boomImg');
         boom.style.left = left+'%';
         boom.style.top = (top-8)+'%';

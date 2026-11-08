@@ -189,10 +189,6 @@ function Calculator() {
         return topPos + FLOORVERTTOLERANCE > FLOORS[nextFloorBase]
     }
 
-    function isNextSectionHole() {
-        return mapArr[floorIndex+1][3] == 'hole';
-    }
-
     function isVisible(element) {
         return element && element.style.display == 'block';
     }
