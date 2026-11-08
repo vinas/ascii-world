@@ -1,16 +1,29 @@
-var charDiv,
-    charmanImg,
-    bkgLayer,
-    gameOn = true;
+// Module instances (created in start-app.js)
+let setup,
+    events,
+    calc,
+    display,
+    level,
+    dialogs,
+    game;
 
-var musicTheme,
+// DOM elements
+let charDiv,
+    charmanImg,
+    bkgLayer;
+
+// Sounds
+let musicTheme,
+    nextLevelTheme,
+    gameOverTheme,
     charJumpSound,
     ufoLaserSound,
     charArrowSound,
     pigJumpSound,
     explosionSound;
 
-var basicMovRate = .6,
+// Game state
+let gameOn = true,
     commands = {},
     actions = {},
     currMap = 0,
@@ -25,7 +38,8 @@ var basicMovRate = .6,
     timer = 0,
     gameTime = 0;
 
-var CHARBASEFLOOR = 52,
+const BASICMOVRATE = .6,
+    CHARBASEFLOOR = 52,
     FLOORS = [66, 60, 54],
     SINGLEBLOCK = 6.25,
     DOUBLEBLOCK = SINGLEBLOCK * 2,
@@ -37,3 +51,9 @@ var CHARBASEFLOOR = 52,
     UFOSHOTHEIGHT = 1,
     CHARSHOTWIDTH = 1.5,
     CHARSHOTHEIGHT = 1;
+
+// Keyboard keys (KeyboardEvent.key)
+const KEY_LEFT = 'ArrowLeft',
+    KEY_RIGHT = 'ArrowRight',
+    KEY_ATTACK = ' ',
+    KEY_JUMP = 'Control';

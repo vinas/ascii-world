@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", function(event) {
-
+document.addEventListener('DOMContentLoaded', () => {
     setup = Setup();
     events = Events();
     calc = Calculator();
@@ -9,5 +8,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
     game = Game();
 
     setup.bindScreenButtons();
-
 });

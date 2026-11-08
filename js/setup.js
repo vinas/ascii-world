@@ -13,115 +13,95 @@ function Setup() {
     return this;
 
     function prepareSoundsForMobile() {
-        var sounds = [
-                musicTheme,
-                charJumpSound,
-                ufoLaserSound,
-                charArrowSound,
-                pigJumpSound,
-                explosionSound,
-                gameOverTheme,
-                nextLevelTheme
-            ];
+        const sounds = [
+            musicTheme,
+            charJumpSound,
+            ufoLaserSound,
+            charArrowSound,
+            pigJumpSound,
+            explosionSound,
+            gameOverTheme,
+            nextLevelTheme
+        ];
 
         // Mobile browsers only allow audio started from a user gesture, so
         // play/pause every sound once (muted) while handling the start tap.
-        sounds.forEach(function(sound) {
+        sounds.forEach(sound => {
             sound.volume = 0;
-            sound.play().catch(function() {});
+            sound.play().catch(() => {});
             sound.pause();
             sound.currentTime = 0;
         });
 
+        sounds.forEach(sound => { sound.volume = 1; });
         musicTheme.volume = .7;
-        charJumpSound.volume = 1;
-        ufoLaserSound.volume = 1;
-        charArrowSound.volume = 1;
-        pigJumpSound.volume = 1;
-        explosionSound.volume = 1;
-        gameOverTheme.volume = 1;
-        nextLevelTheme.volume = 1;
     }
 
-    function loadContent()
-    {
-     var ImgsToPreload = new Array(
+    function loadContent() {
+        preloadImages([
             'img/charman/charman-01.png',
             'img/charman/charman-bow.gif',
             'img/charman/charman-jump.gif',
             'img/charman/charman-run.gif',
             'img/charman/charman-swim.gif',
             'img/interactions/explosion01.gif'
-        );
-        preloadImages(ImgsToPreload);
+        ]);
         setSounds();
     }
 
     function preventDblClick() {
-        document.ondblclick = function(e) { e.preventDefault(); };
+        document.ondblclick = e => e.preventDefault();
     }
 
     function enableKeyboard() {
-        var pressedKeys = {};
+        const pressActions = {
+                [KEY_RIGHT]: events.tapMoveRight,
+                [KEY_LEFT]: events.tapMoveLeft,
+                [KEY_ATTACK]: events.tapAttack,
+                [KEY_JUMP]: events.tapJump
+            },
+            releaseButtons = {
+                [KEY_RIGHT]: 'btnRight',
+                [KEY_LEFT]: 'btnLeft',
+                [KEY_ATTACK]: 'btnAttack',
+                [KEY_JUMP]: 'btnJump'
+            },
+            pressedKeys = {};
 
-        document.addEventListener('keydown', function(e) {
-            pressedKeys[e.which] = true;
-            switch (e.which) {
-                case 39:
-                    events.tapMoveRight();
-                    break;
-                case 37:
-                    events.tapMoveLeft();
-                    break;
-                case 32:
-                    events.tapAttack();
-                    break;
-                case 17:
-                    events.tapJump();
-            }
+        document.addEventListener('keydown', e => {
+            pressedKeys[e.key] = true;
+            if (pressActions[e.key]) pressActions[e.key]();
         });
 
-        document.addEventListener('keyup', function(e) {
-            pressedKeys[e.which] = false;
-            setTimeout(function() {
+        document.addEventListener('keyup', e => {
+            pressedKeys[e.key] = false;
+            setTimeout(() => {
                 // The key may have been pressed again during the delay
-                if (pressedKeys[e.which]) return;
-                switch (e.which) {
-                    case 39:
-                        events.tapStop('btnRight');
-                        break;
-                    case 37:
-                        events.tapStop('btnLeft');
-                        break;
-                    case 32:
-                        events.tapStop('btnAttack');
-                        break;
-                    case 17:
-                        events.tapStop('btnJump');
-                }
+                if (pressedKeys[e.key]) return;
+                if (releaseButtons[e.key]) events.tapStop(releaseButtons[e.key]);
             }, 50);
         });
     }
 
     function enableTouchControls() {
-        var buttons = {
-                btnAttack: events.tapAttack,
-                btnJump: events.tapJump,
-                btnLeft: events.tapMoveLeft,
-                btnRight: events.tapMoveRight
-            };
+        const buttons = {
+            btnAttack: events.tapAttack,
+            btnJump: events.tapJump,
+            btnLeft: events.tapMoveLeft,
+            btnRight: events.tapMoveRight
+        };
 
-        Object.keys(buttons).forEach(function(id) {
-            var btn = document.getElementById(id);
-            btn.addEventListener('touchstart', buttons[id]);
-            btn.addEventListener('touchend', function() { events.tapStop(id); });
+        Object.entries(buttons).forEach(([id, onPress]) => {
+            const btn = document.getElementById(id);
+            btn.addEventListener('touchstart', () => onPress());
+            btn.addEventListener('touchend', () => events.tapStop(id));
         });
     }
 
     function bindScreenButtons() {
-        document.getElementById('startGame').addEventListener('click', game.init);
-        document.getElementById('gameOver').addEventListener('click', events.reset);
-        document.getElementById('levelScore').addEventListener('click', game.nextLevel);
+        document.getElementById('startGame').addEventListener('click', () => game.init());
+        document.getElementById('gameOver').addEventListener('click', () => events.reset());
+        document.getElementById('levelScore').addEventListener('click', () => game.nextLevel());
     }
 
     function resetGame() {
@@ -132,7 +112,7 @@ function Setup() {
         hideHidables();
         resetGameVariables();
         cancelAllActions();
-        cancelAllcommands();
+        cancelAllCommands();
         resetCharman();
         level.loadLevelTriggers();
         loadLevelMap();
@@ -145,10 +125,10 @@ function Setup() {
         currMap = 0;
         gameTime = 0;
         timer = 0;
-        time = +new Date();
+        time = Date.now();
     }
 
-    function cancelAllcommands() {
+    function cancelAllCommands() {
         commands.right = false;
         commands.left = false;
         commands.fire = false;
@@ -171,52 +151,34 @@ function Setup() {
 
     function resetCharman() {
         charDiv.style.opacity = 1;
-        charDiv.style.top = topPos+'%';
-        charDiv.style.left = leftPos+'%';
+        charDiv.style.top = `${topPos}%`;
+        charDiv.style.left = `${leftPos}%`;
         charDiv.style.display = 'block';
     }
 
     function loadEnemyList() {
-        enemies = [
-                document.getElementById('ufo'),
-                document.getElementById('pig'),
-                document.getElementById('alien'),
-                document.getElementById('bigBoss')
-            ];
+        enemies = ['ufo', 'pig', 'alien', 'bigBoss'].map(id => document.getElementById(id));
     }
 
     function loadLevelMap() {
-        var floorPos = 0,
-            floorTopPos;
+        const maps = level.loadMapArr();
+        let floorPos = 0;
 
-        document.getElementById('stage').innerHTML = (currMap + 1) + ' / ' + level.loadMapArr().length;
+        document.getElementById('stage').innerHTML = `${currMap + 1} / ${maps.length}`;
         document.getElementById('level').innerHTML = level.current;
 
         mapIndexArray = [];
-        mapArr = level.loadMapArr()[currMap];
+        mapArr = maps[currMap];
 
         display.setBackgroundImg();
         display.clearBackground();
 
-        mapArr.forEach(buildMap);
-
-        function buildMap(mapItem) {
-            floorTopPos = FLOORS[mapItem[2]];
-            if (mapItem[0].indexOf('fragile') == -1) {
-                bkgLayer.innerHTML += '<img class="floor '+mapItem[1]+'" style="left: '+floorPos+'%; top: '+floorTopPos+'%" src="img/map/floor/'+mapItem[0]+'" />';
-            } else {
-                bkgLayer.innerHTML += '<img class="floor fragile '+mapItem[1]+'" style="left: '+floorPos+'%; top: '+floorTopPos+'%" src="img/map/floor/'+mapItem[0]+'" />';
-            }
-            switch (mapItem[1]) {
-                case 'single':
-                    floorPos += SINGLEBLOCK;
-                    break;
-                case 'double':
-                    floorPos += DOUBLEBLOCK;
-                    break;
-            }
+        mapArr.forEach(([image, width, floor]) => {
+            const classes = image.includes('fragile') ? `floor fragile ${width}` : `floor ${width}`;
+            bkgLayer.innerHTML += `<img class="${classes}" style="left: ${floorPos}%; top: ${FLOORS[floor]}%" src="img/map/floor/${image}" />`;
+            floorPos += (width === 'single') ? SINGLEBLOCK : DOUBLEBLOCK;
             mapIndexArray.push(floorPos);
-        }
+        });
     }
 
     function hideHidables() {
@@ -224,19 +186,16 @@ function Setup() {
     }
 
     function setClassProp(className, prop, value) {
-        var els = document.getElementsByClassName(className),
-            i;
-        for (i = 0; i < els.length; i++) {
-            els[i].style[prop] = value;
+        for (const el of document.getElementsByClassName(className)) {
+            el.style[prop] = value;
         }
     }
 
     function preloadImages(images) {
-        var img, i;
-        for (i = 0; i < images.length; i++) {
-            img = new Image();
-            img.src = images[i];
-        }
+        images.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
     }
 
     function setSounds() {

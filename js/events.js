@@ -1,5 +1,5 @@
-function Events()
-{
+function Events() {
+
     this.tapJump = tapJump;
     this.tapMoveRight = tapMoveRight;
     this.tapMoveLeft = tapMoveLeft;
@@ -9,41 +9,39 @@ function Events()
     this.crossRight = crossRight;
     this.crossLeft = crossLeft;
     this.triggers = triggers;
- 
+
     return this;
 
     function triggers() {
-        var trigger = levelTriggers[currMap][Math.floor(leftPos)+FLOORHORTOLERANCE];
-        if (commands.right && trigger) {
-            if (!trigger.onlyOnce || !trigger.triggered) {
-                trigger.actions.forEach(function(action, idx) {
-                    if (trigger.params[idx]) {
-                        action(trigger.params[idx]);
-                    } else {
-                        action();
-                    }
-                });
-                trigger.triggered = true;
+        const trigger = levelTriggers[currMap][Math.floor(leftPos) + FLOORHORTOLERANCE];
+        if (!commands.right || !trigger) return;
+        if (trigger.onlyOnce && trigger.triggered) return;
+
+        trigger.actions.forEach((action, idx) => {
+            if (trigger.params[idx]) {
+                action(trigger.params[idx]);
+            } else {
+                action();
             }
-        }
+        });
+        trigger.triggered = true;
     }
 
     function crossRight() {
-        actions.cancelShot = true;
-        setup.hideHidables();
-        display.setCharmanLeft();
-        currMap += 1;
-        setup.loadLevelMap();
-        setTimeout(function() { actions.cancelShot = false; }, 20);
+        crossMap(1, display.setCharmanLeft);
     }
 
     function crossLeft() {
+        crossMap(-1, display.setCharmanRight);
+    }
+
+    function crossMap(step, placeCharman) {
         actions.cancelShot = true;
         setup.hideHidables();
-        display.setCharmanRight();
-        currMap -= 1;
+        placeCharman();
+        currMap += step;
         setup.loadLevelMap();
-        setTimeout(function() { actions.cancelShot = false; }, 20);
+        setTimeout(() => { actions.cancelShot = false; }, 20);
     }
 
     function reset() {
@@ -81,13 +79,8 @@ function Events()
 
     function tapStop(elmId) {
         display.imgColorOut(elmId);
-        switch (elmId) {
-            case 'btnRight':
-                commands.right = false;
-                break;
-            case 'btnLeft':
-                commands.left = false;
-        }
+        if (elmId === 'btnRight') commands.right = false;
+        if (elmId === 'btnLeft') commands.left = false;
     }
 
     function tapJump() {
@@ -95,9 +88,7 @@ function Events()
             display.imgColorOver('btnJump');
             commands.jump = true;
             charJumpSound.play();
-            setTimeout(function () {
-                commands.jump = false;
-            }, 150);
+            setTimeout(() => { commands.jump = false; }, 150);
         }
     }
 

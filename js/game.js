@@ -19,7 +19,7 @@ function Game() {
     }
 
     function nextLevel() {
-        window.location.href = 'level'+display.addZero(level.current+1)+'.html';
+        window.location.href = `level${display.addZero(level.current + 1)}.html`;
     }
 
     function passedNextLevel() {
@@ -48,12 +48,11 @@ function Game() {
     function handleFiring() {
         if (commands.fire && !actions.firing) {
             actions.firing = true;
-            display.shoot(function() {
+            display.shoot(() => {
                 commands.fire = false;
                 actions.firing = false;
                 display.charShot();
             });
-            return;
         }
     }
 
@@ -74,11 +73,11 @@ function Game() {
                 display.fall();
             }
         }
-        charDiv.style.left = leftPos+'%';
+        charDiv.style.left = `${leftPos}%`;
     }
 
     function handleGameEnds() {
-        var ending = getEndingCause()
+        const ending = getEndingCause();
         if (ending) endGame(ending);
     }
 
@@ -95,26 +94,27 @@ function Game() {
         calc.setGameEndingTime();
         switch (reason) {
             case 'hole':
-                gameOverTheme.currentTime = 0;
-                gameOverTheme.play();
+                playFromStart(gameOverTheme);
                 display.fall(display.showResetButton);
                 break;
             case 'hit':
             case 'touched':
-                gameOverTheme.currentTime = 0;
-                gameOverTheme.play();
+                playFromStart(gameOverTheme);
                 display.showResetButton();
                 break;
             case 'abducted':
-                nextLevelTheme.currentTime = 0;
-                nextLevelTheme.play();
+                playFromStart(nextLevelTheme);
                 display.abduction();
                 break;
             case 'nextLevel':
-                nextLevelTheme.currentTime = 0;
-                nextLevelTheme.play();
+                playFromStart(nextLevelTheme);
                 display.levelScore();
         }
+    }
+
+    function playFromStart(sound) {
+        sound.currentTime = 0;
+        sound.play();
     }
 
     function handleJump() {
@@ -128,7 +128,7 @@ function Game() {
         if (commands.right || commands.left) {
             if (leftPos >= 98) {
                 events.crossRight();
-            } else if ((currMap != 0 ) && leftPos <= -3) {
+            } else if (currMap !== 0 && leftPos <= -3) {
                 events.crossLeft();
             }
         }

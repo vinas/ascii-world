@@ -373,7 +373,7 @@ function Level() {
                         {
                             left: 78,
                             top: 12,
-                            callback: function() { setTimeout(display.bigBossOut, 600) }
+                            callback: () => setTimeout(display.bigBossOut, 600)
                         }
                     ]
                 },
