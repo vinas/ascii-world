@@ -1,12 +1,12 @@
 function Level() {
 
-    this.current = 2;
-    this.bkgdImage1 = 'bkg-ufo01.png';
-    this.bkgdImage2 = 'bkg-ufo02.png';
-    this.loadMapArr = loadMapArr;
-    this.loadLevelTriggers = loadLevelTriggers;
-
-    return this;
+    return {
+        current: 2,
+        bkgdImage1: 'bkg-ufo01.png',
+        bkgdImage2: 'bkg-ufo02.png',
+        loadMapArr,
+        loadLevelTriggers
+    };
 
     function loadMapArr() {
         return [
@@ -150,7 +150,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.turnFragilesToHoles
+                        effects.turnFragilesToHoles
                     ],
                     params: [
                         {
@@ -162,13 +162,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 37,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 }
@@ -179,13 +179,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienAttack01
+                        enemies.alienAttack01
                     ],
                     params: [
                         {
                             left: 70,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 },
@@ -193,13 +193,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 80,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 }
@@ -210,13 +210,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 70,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 },
@@ -224,14 +224,14 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 50,
                             top: 51,
                             right: true,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 }
@@ -242,13 +242,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 80,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 }
@@ -259,13 +259,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 88,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 },
@@ -273,13 +273,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienAttack01
+                        enemies.alienAttack01
                     ],
                     params: [
                         {
                             left: 88,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 }
@@ -290,14 +290,14 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 50,
                             top: 51,
                             right: true,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 }
@@ -308,14 +308,14 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienIn
+                        enemies.alienIn
                     ],
                     params: [
                         {
                             left: 27,
                             top: 51,
                             right: true,
-                            callback: display.alienOutLeft
+                            callback: enemies.alienOutLeft
                         }
                     ]
                 },
@@ -323,13 +323,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.alienAttack01
+                        enemies.alienAttack01
                     ],
                     params: [
                         {
                             left: 85,
                             top: 51,
-                            callback: display.alienOutRight
+                            callback: enemies.alienOutRight
                         }
                     ]
                 }
@@ -340,7 +340,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.turnFragilesToHoles
+                        effects.turnFragilesToHoles
                     ],
                     params: [
                         {
@@ -355,7 +355,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.turnFragilesToHoles
+                        effects.turnFragilesToHoles
                     ],
                     params: [
                         {
@@ -367,13 +367,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.bigBossIn
+                        enemies.bigBossIn
                     ],
                     params: [
                         {
                             left: 78,
                             top: 12,
-                            callback: () => setTimeout(display.bigBossOut, 600)
+                            callback: () => setTimeout(enemies.bigBossOut, 600)
                         }
                     ]
                 },
@@ -381,11 +381,11 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.bigBossRoutine
+                        enemies.bigBossRoutine
                     ],
                     params: [
                         {
-                            callback: display.unHole,
+                            callback: effects.unHole,
                             args: [0, 1, 2, 7, 8, 9]
                         }
                     ]
@@ -397,13 +397,13 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.standingPig
+                        enemies.standingPig
                     ],
                     params: [
                         {
                             left: 75,
                             top: 56,
-                            callback: display.dialogUfo
+                            callback: dialogs.pigMeeting
                         }
                     ]
                 },
@@ -411,7 +411,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        dialogs.dialog021007
+                        dialogs.pigEscape
                     ],
                     params: []
                 }

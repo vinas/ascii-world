@@ -1,12 +1,12 @@
 function Level() {
 
-    this.current = 3;
-    this.bkgdImage1 = 'bkg-mointains01.png';
-    this.bkgdImage2 = 'bkg-mointains02.png';
-    this.loadMapArr = loadMapArr;
-    this.loadLevelTriggers = loadLevelTriggers;
-
-    return this;
+    return {
+        current: 3,
+        bkgdImage1: 'bkg-mointains01.png',
+        bkgdImage2: 'bkg-mointains02.png',
+        loadMapArr,
+        loadLevelTriggers
+    };
 
     function loadMapArr() {
         return [

@@ -1,12 +1,12 @@
 function Level() {
 
-    this.current = 1;
-    this.bkgdImage1 = 'bkg-mointains01.png';
-    this.bkgdImage2 = 'bkg-mointains02.png';
-    this.loadMapArr = loadMapArr;
-    this.loadLevelTriggers = loadLevelTriggers;
-
-    return this;
+    return {
+        current: 1,
+        bkgdImage1: 'bkg-mointains01.png',
+        bkgdImage2: 'bkg-mointains02.png',
+        loadMapArr,
+        loadLevelTriggers
+    };
 
     function loadMapArr() {
         return [
@@ -222,7 +222,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoIn
+                        enemies.ufoIn
                     ],
                     params: [
                         {
@@ -235,7 +235,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoOut
+                        enemies.ufoOut
                     ],
                     params: [
                         {}
@@ -248,7 +248,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.standingPig
+                        enemies.standingPig
                     ],
                     params: [
                         {
@@ -261,7 +261,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoIn
+                        enemies.ufoIn
                     ],
                     params: [
                         {
@@ -274,7 +274,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoOut
+                        enemies.ufoOut
                     ],
                     params: [
                         {}
@@ -287,7 +287,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.jumpingPig
+                        enemies.jumpingPig
                     ],
                     params: [
                         {
@@ -301,7 +301,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoIn
+                        enemies.ufoIn
                     ],
                     params: [
                         {
@@ -314,7 +314,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoOut
+                        enemies.ufoOut
                     ],
                     params: [
                         {}
@@ -327,7 +327,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.jumpingPig
+                        enemies.jumpingPig
                     ],
                     params: [
                         {
@@ -341,7 +341,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoAttack01
+                        enemies.ufoAttack01
                     ],
                     params: [
                         {
@@ -357,7 +357,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.standingPig
+                        enemies.standingPig
                     ],
                     params: [
                         {
@@ -370,7 +370,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.abductPig
+                        enemies.abductPig
                     ],
                     params: [{}]
                 },
@@ -378,7 +378,7 @@ function Level() {
                     onlyOnce: false,
                     triggered: false,
                     actions: [
-                        display.ufoIn,
+                        enemies.ufoIn,
                         
                     ],
                     params: [
@@ -392,7 +392,7 @@ function Level() {
                     onlyOnce: false,
                     triggered: false,
                     actions: [
-                        display.ufoOut
+                        enemies.ufoOut
                     ],
                     params: [
                         {}
@@ -405,7 +405,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoAttack01
+                        enemies.ufoAttack01
                     ],
                     params: [
                         {
@@ -418,7 +418,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoAttack01
+                        enemies.ufoAttack01
                     ],
                     params: [
                         {
@@ -434,7 +434,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.jumpingPig
+                        enemies.jumpingPig
                     ],
                     params: [
                         {
@@ -448,7 +448,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoAttack01
+                        enemies.ufoAttack01
                     ],
                     params: [
                         {
@@ -461,7 +461,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoAttack01
+                        enemies.ufoAttack01
                     ],
                     params: [
                         {
@@ -477,7 +477,7 @@ function Level() {
             //         onlyOnce: true,
             //         triggered: false,
             //         actions: [
-            //             display.ufoAttack01
+            //             enemies.ufoAttack01
             //         ],
             //         params: [
             //             {
@@ -493,7 +493,7 @@ function Level() {
             //         onlyOnce: true,
             //         triggered: false,
             //         actions: [
-            //             display.ufoAttack01
+            //             enemies.ufoAttack01
             //         ],
             //         params: [
             //             {
@@ -506,7 +506,7 @@ function Level() {
             //         onlyOnce: true,
             //         triggered: false,
             //         actions: [
-            //             display.ufoAttack01
+            //             enemies.ufoAttack01
             //         ],
             //         params: [
             //             {
@@ -522,7 +522,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.standingPig
+                        enemies.standingPig
                     ],
                     params: [
                         {
@@ -535,7 +535,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.abductPig
+                        enemies.abductPig
                     ],
                     params: [
                         {}
@@ -548,7 +548,7 @@ function Level() {
             //         onlyOnce: true,
             //         triggered: false,
             //         actions: [
-            //             display.ufoAttack01
+            //             enemies.ufoAttack01
             //         ],
             //         params: [
             //             {
@@ -561,7 +561,7 @@ function Level() {
             //         onlyOnce: true,
             //         triggered: false,
             //         actions: [
-            //             display.ufoAttack01
+            //             enemies.ufoAttack01
             //         ],
             //         params: [
             //             {
@@ -579,7 +579,7 @@ function Level() {
             //         onlyOnce: false,
             //         triggered: false,
             //         actions: [
-            //             display.ufoIn
+            //             enemies.ufoIn
             //         ],
             //         params: [
             //             {
@@ -592,7 +592,7 @@ function Level() {
             //         onlyOnce: true,
             //         triggered: false,
             //         actions: [
-            //             display.ufoOut
+            //             enemies.ufoOut
             //         ],
             //         params: [
             //             {}
@@ -605,7 +605,7 @@ function Level() {
                     onlyOnce: false,
                     triggered: false,
                     actions: [
-                        display.jumpingPig
+                        enemies.jumpingPig
                     ],
                     params: [
                         {
@@ -619,7 +619,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoIn
+                        enemies.ufoIn
                     ],
                     params: [
                         {
@@ -632,7 +632,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoOut
+                        enemies.ufoOut
                     ],
                     params: [
                         {}
@@ -642,7 +642,7 @@ function Level() {
                     onlyOnce: true,
                     triggered: false,
                     actions: [
-                        display.ufoAttack01
+                        enemies.ufoAttack01
                     ],
                     params: [
                         {

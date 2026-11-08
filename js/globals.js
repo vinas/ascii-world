@@ -1,26 +1,26 @@
 // Module instances (created in start-app.js)
-let setup,
+let dom,
+    collision,
+    timeUtils,
+    sounds,
+    physics,
+    levelMap,
+    charman,
+    projectiles,
+    enemies,
+    effects,
+    screens,
+    input,
     events,
-    calc,
-    display,
+    setup,
+    game,
     level,
-    dialogs,
-    game;
+    dialogs;
 
 // DOM elements
 let charDiv,
     charmanImg,
     bkgLayer;
-
-// Sounds
-let musicTheme,
-    nextLevelTheme,
-    gameOverTheme,
-    charJumpSound,
-    ufoLaserSound,
-    charArrowSound,
-    pigJumpSound,
-    explosionSound;
 
 // Game state
 let gameOn = true,
@@ -30,7 +30,6 @@ let gameOn = true,
     mapIndexArray = [],
     mapArr = [],
     levelTriggers = [],
-    enemies = [],
     floorIndex = 0,
     leftPos = 0,
     topPos,

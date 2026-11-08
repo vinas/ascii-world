@@ -1,11 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    setup = Setup();
+    dom = Dom();
+    collision = Collision();
+    timeUtils = TimeUtils();
+    sounds = Sounds();
+    physics = MapPhysics();
+    levelMap = LevelMap();
+    charman = Charman();
+    projectiles = Projectiles();
+    enemies = Enemies();
+    effects = Effects();
+    screens = Screens();
+    input = Input();
     events = Events();
-    calc = Calculator();
-    display = Display();
+    setup = Setup();
+    game = Game();
     level = Level();
     dialogs = (typeof Dialogs !== 'undefined') ? Dialogs() : false;
-    game = Game();
 
-    setup.bindScreenButtons();
+    input.bindScreenButtons();
 });

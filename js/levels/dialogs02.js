@@ -1,8 +1,7 @@
 function Dialogs() {
 
-    const balloon = document.getElementById('dialogBalloon'),
-        charDiv = document.getElementById('charman'),
-        pig = document.getElementById('pig');
+    const balloon = dom.el('dialogBalloon'),
+        pig = dom.el('pig');
 
     const PIG_MEETING = [
             [pig, "Hey, wait a moment! DON'T SHOOT!"],
@@ -33,18 +32,18 @@ function Dialogs() {
             [pig, 'They made me radioactive as well...']
         ];
 
-    this.start = start;
-    this.dialog021007 = dialog021007;
+    return {
+        pigMeeting,
+        pigEscape
+    };
 
-    return this;
-
-    function start() {
-        display.freezeChar();
-        playDialog(PIG_MEETING, display.unfreezeChar);
+    function pigMeeting() {
+        charman.freezeChar();
+        playDialog(PIG_MEETING, charman.unfreezeChar);
     }
 
-    function dialog021007() {
-        display.freezeChar();
+    function pigEscape() {
+        charman.freezeChar();
         playDialog(PIG_ESCAPE, endDialog);
     }
 
@@ -61,14 +60,14 @@ function Dialogs() {
 
     function endDialog() {
         hideBalloon();
-        display.unfreezeChar();
+        charman.unfreezeChar();
         setTimeout(() => {
-            display.moveElmRight(pig, 100, BASICMOVRATE * .3, () => { pig.style.display = 'none'; });
+            enemies.moveElmRight(pig, 100, BASICMOVRATE * .3, () => dom.hide(pig));
         }, 500);
     }
 
     function dialogBalloon(el, txt, callback) {
-        const elLeft = calc.getCoord(el.style.left);
+        const elLeft = collision.getCoord(el.style.left);
         if (el.classList.contains('enemy')) {
             balloon.style.backgroundImage = "url('img/interactions/dialog-balloon-right.png')";
             balloon.style.left = `${elLeft - 27}%`;
@@ -76,14 +75,14 @@ function Dialogs() {
             balloon.style.backgroundImage = "url('img/interactions/dialog-balloon-left.png')";
             balloon.style.left = `${elLeft + FLOORHORTOLERANCE}%`;
         }
-        balloon.style.top = `${calc.getCoord(el.style.top) - 45}%`;
+        balloon.style.top = `${collision.getCoord(el.style.top) - 45}%`;
         balloon.innerHTML = txt;
         balloon.onclick = callback || null;
         balloon.style.display = 'block';
     }
 
     function hideBalloon() {
-        balloon.style.display = 'none';
+        dom.hide(balloon);
     }
 
 }

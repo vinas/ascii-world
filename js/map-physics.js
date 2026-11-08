@@ -1,39 +1,18 @@
-function Calculator() {
+// How the current map's floor sections (solid / hole / liquid, at different
+// heights) constrain the player's movement, jumps and falls.
+function MapPhysics() {
 
-    this.setNewCoord = setNewCoord;
-    this.setCurrentFloorIndex = setCurrentFloorIndex;
-    this.isUserOnWater = isUserOnWater;
-    this.isSteppingOnHole = isSteppingOnHole;
-    this.shouldBeFalling = shouldBeFalling;
-    this.jumpTop = jumpTop;
-    this.jumpFloorBase = jumpFloorBase;
-    this.getCoord = getCoord;
-    this.hitEnemy = hitEnemy;
-    this.touchedEnemy = touchedEnemy;
-    this.setGameEndingTime = setGameEndingTime;
-    this.areTouching = areTouching;
-    this.isVisible = isVisible;
-    this.isOverHole = isOverHole;
-
-    return this;
-
-    function setGameEndingTime() {
-        gameTime = Date.now() - time;
-        timer = 0;
-    }
-
-    function touchedEnemy() {
-        return enemies.some(enemy => isVisible(enemy) && areTouching(charDiv, enemy));
-    }
-
-    function hitEnemy(bullet) {
-        return enemies.find(enemy => isVisible(enemy) && areTouching(bullet, enemy)) || false;
-    }
-
-    // Numeric value of an inline style length such as '12.5%'
-    function getCoord(coord) {
-        return parseFloat(coord) || 0;
-    }
+    return {
+        setNewCoord,
+        setCurrentFloorIndex,
+        isUserOnWater,
+        isSteppingOnHole,
+        isOverHole,
+        shouldBeFalling,
+        jumpTop,
+        jumpFloorBase,
+        fallTarget
+    };
 
     function jumpFloorBase() {
         return FLOORS[mapArr[jumpFloorIndex()][2]] - FLOORVERTTOLERANCE;
@@ -45,6 +24,11 @@ function Calculator() {
 
     function jumpFloorIndex() {
         return (!isAllInSection() && isRightFloorHigherThanCurrent()) ? floorIndex + 1 : floorIndex;
+    }
+
+    // Where a fall from the current section ends (off-screen for holes)
+    function fallTarget() {
+        return (mapArr[floorIndex][3] !== 'hole') ? FLOORS[mapArr[floorIndex][2]] - FLOORVERTTOLERANCE : 120;
     }
 
     function setNewCoord() {
@@ -149,21 +133,6 @@ function Calculator() {
 
     function isCharmanHigherThanNextFloor(nextFloorBase) {
         return topPos + FLOORVERTTOLERANCE > FLOORS[nextFloorBase];
-    }
-
-    function isVisible(element) {
-        return element && element.style.display === 'block';
-    }
-
-    function areTouching(elementA, elementB) {
-        const aLeft = getCoord(elementA.style.left),
-            aTop = getCoord(elementA.style.top),
-            bLeft = getCoord(elementB.style.left),
-            bTop = getCoord(elementB.style.top);
-        return aLeft + getCoord(elementA.style.width) - 2 >= bLeft
-            && aLeft < bLeft + getCoord(elementB.style.width) - 2
-            && aTop + getCoord(elementA.style.height) - 2 >= bTop
-            && aTop < bTop + getCoord(elementB.style.height) - 2;
     }
 
 }

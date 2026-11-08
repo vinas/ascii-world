@@ -1,17 +1,15 @@
+// Level triggers, moving between maps, and restarting after game over
 function Events() {
 
-    this.tapJump = tapJump;
-    this.tapMoveRight = tapMoveRight;
-    this.tapMoveLeft = tapMoveLeft;
-    this.tapStop = tapStop;
-    this.tapAttack = tapAttack;
-    this.reset = reset;
-    this.crossRight = crossRight;
-    this.crossLeft = crossLeft;
-    this.triggers = triggers;
+    return {
+        triggers,
+        crossRight,
+        crossLeft,
+        reset
+    };
 
-    return this;
-
+    // Runs the current map's trigger at the player's position (if any) while
+    // moving right. Triggers are defined per map in js/levels/.
     function triggers() {
         const trigger = levelTriggers[currMap][Math.floor(leftPos) + FLOORHORTOLERANCE];
         if (!commands.right || !trigger) return;
@@ -28,68 +26,26 @@ function Events() {
     }
 
     function crossRight() {
-        crossMap(1, display.setCharmanLeft);
+        crossMap(1, charman.placeAtLeftEdge);
     }
 
     function crossLeft() {
-        crossMap(-1, display.setCharmanRight);
+        crossMap(-1, charman.placeAtRightEdge);
     }
 
     function crossMap(step, placeCharman) {
         actions.cancelShot = true;
-        setup.hideHidables();
+        levelMap.hideHidables();
         placeCharman();
         currMap += step;
-        setup.loadLevelMap();
+        levelMap.load();
         setTimeout(() => { actions.cancelShot = false; }, 20);
     }
 
     function reset() {
         setup.resetGame();
         gameOn = true;
-        document.getElementById('gameOver').style.display = 'none';
-    }
-
-    function tapAttack() {
-        if (gameOn && actions.canFire && !actions.swimming && !actions.shooting) {
-            display.imgColorOver('btnAttack');
-            commands.fire = true;
-        }
-    }
-
-    function tapMoveRight() {
-        if (gameOn && actions.canMove) {
-            display.imgColorOver('btnRight');
-            actions.lastDirection = 'right';
-            display.mirrorObj(charmanImg, 1);
-            commands.left = false;
-            commands.right = true;
-        }
-    }
-
-    function tapMoveLeft() {
-        if (gameOn && actions.canMove) {
-            display.imgColorOver('btnLeft');
-            actions.lastDirection = 'left';
-            display.mirrorObj(charmanImg, -1);
-            commands.right = false;
-            commands.left = true;
-        }
-    }
-
-    function tapStop(elmId) {
-        display.imgColorOut(elmId);
-        if (elmId === 'btnRight') commands.right = false;
-        if (elmId === 'btnLeft') commands.left = false;
-    }
-
-    function tapJump() {
-        if (gameOn && actions.canJump && !actions.swimming && !actions.falling && !actions.jumping) {
-            display.imgColorOver('btnJump');
-            commands.jump = true;
-            charJumpSound.play();
-            setTimeout(() => { commands.jump = false; }, 150);
-        }
+        screens.hideGameOver();
     }
 
 }
