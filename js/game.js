@@ -91,7 +91,7 @@ function Game() {
         gameOn = false;
         musicTheme.pause();
         pigJumpSound.pause();
-        setGameEndingTime();
+        calc.setGameEndingTime();
         switch (reason) {
             case 'hole':
                 gameOverTheme.currentTime = 0;

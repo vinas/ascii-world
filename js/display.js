@@ -116,7 +116,7 @@ function Display() {
     }
 
     function unHole(indexes) {
-        setClassProp('fragile', 'opacity', 0);
+        setup.setClassProp('fragile', 'opacity', 0);
         var els = document.getElementsByClassName('fragile'),
             i;
         for (i = 0; i < els.length; i++) {
@@ -136,7 +136,7 @@ function Display() {
     }
 
     function turnFragilesToHoles(params) {
-        setClassProp('fragile', 'opacity', 1);
+        setup.setClassProp('fragile', 'opacity', 1);
         var els = document.getElementsByClassName('fragile'),
             i;
         for (i = 0; i < els.length; i++) {
@@ -597,9 +597,9 @@ function Display() {
 
     function setBackgroundImg() {
         if (currMap % 2 == 0) {
-            bkgLayer.style.backgroundImage = "url('img/map/"+this.bkgdImage1+"')";
+            bkgLayer.style.backgroundImage = "url('img/map/"+level.bkgdImage1+"')";
         } else {
-            bkgLayer.style.backgroundImage = "url('img/map/"+this.bkgdImage2+"')";
+            bkgLayer.style.backgroundImage = "url('img/map/"+level.bkgdImage2+"')";
         }
     }    
 

@@ -1,7 +1,8 @@
 function Dialogs() {
 
     var balloon = document.getElementById('dialogBalloon'),
-        charDiv = document.getElementById('charman');
+        charDiv = document.getElementById('charman'),
+        pig = document.getElementById('pig');
 
     this.start = start;
     this.dialog021007 = dialog021007;
