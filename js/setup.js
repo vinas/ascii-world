@@ -60,7 +60,10 @@ function Setup() {
     }
 
     function enableKeyboard() {
+        var pressedKeys = {};
+
         document.addEventListener('keydown', function(e) {
+            pressedKeys[e.which] = true;
             switch (e.which) {
                 case 39:
                     events.tapMoveRight();
@@ -77,7 +80,10 @@ function Setup() {
         });
 
         document.addEventListener('keyup', function(e) {
+            pressedKeys[e.which] = false;
             setTimeout(function() {
+                // The key may have been pressed again during the delay
+                if (pressedKeys[e.which]) return;
                 switch (e.which) {
                     case 39:
                         events.tapStop('btnRight');
