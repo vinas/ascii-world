@@ -11,37 +11,25 @@ function Setup() {
     return this;
 
     function prepareSoundsForMobile() {
-        musicTheme.volume = 0;
-        charJumpSound.volume = 0;
-        ufoLaserSound.volume = 0;
-        charArrowSound.volume = 0;
-        pigJumpSound.volume = 0;
-        explosionSound.volume = 0;
-        gameOverTheme.volume = 0;
-        nextLevelTheme.volume = 0;
+        var sounds = [
+                musicTheme,
+                charJumpSound,
+                ufoLaserSound,
+                charArrowSound,
+                pigJumpSound,
+                explosionSound,
+                gameOverTheme,
+                nextLevelTheme
+            ];
 
-        musicTheme.play();
-        musicTheme.pause();
-        charJumpSound.play()
-        charJumpSound.pause();
-        ufoLaserSound.play();
-        ufoLaserSound.pause();
-        charArrowSound.play();
-        charArrowSound.pause();
-        pigJumpSound.play();
-        pigJumpSound.pause();
-        explosionSound.play();
-        explosionSound.pause();
-        gameOverTheme.play();
-        gameOverTheme.pause();
-        nextLevelTheme.play();
-        nextLevelTheme.pause();
-
-        charJumpSound.currentTime = 0;
-        ufoLaserSound.currentTime = 0;
-        charArrowSound.currentTime = 0;
-        pigJumpSound.currentTime = 0;
-        explosionSound.currentTime = 0;
+        // Mobile browsers only allow audio started from a user gesture, so
+        // play/pause every sound once (muted) while handling the start tap.
+        sounds.forEach(function(sound) {
+            sound.volume = 0;
+            sound.play().catch(function() {});
+            sound.pause();
+            sound.currentTime = 0;
+        });
 
         musicTheme.volume = .7;
         charJumpSound.volume = 1;
