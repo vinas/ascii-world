@@ -61,8 +61,17 @@ function Projectiles() {
 
     // Shot from an enemy towards the player's side of the screen.
     // relativeTop: height of the gun relative to the enemy's top.
+    // callback (e.g. the enemy leaving) runs once: 300ms after firing or
+    // when the shot leaves the screen, whichever comes first.
     function enemyFire(enemy, moveRate, relativeTop, callback) {
         if (!collision.isVisible(enemy)) return;
+
+        let callbackDone = false;
+        const done = () => {
+            if (callbackDone || !callback) return;
+            callbackDone = true;
+            callback();
+        };
 
         const enemyLeft = collision.getCoord(enemy.style.left),
             isRight = leftPos > enemyLeft;
@@ -70,7 +79,7 @@ function Projectiles() {
 
         sounds.play('ufoLaser');
         dom.at(enemyShot, left, collision.getCoord(enemy.style.top) + relativeTop);
-        if (callback) setTimeout(callback, 300);
+        setTimeout(done, 300);
         moveShot();
 
         function moveShot() {
@@ -88,7 +97,7 @@ function Projectiles() {
                 left += moveRate;
             } else {
                 dom.hide(enemyShot);
-                if (callback) callback();
+                done();
                 return;
             }
             enemyShot.style.left = `${left}%`;
