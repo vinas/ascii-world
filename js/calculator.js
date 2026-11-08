@@ -26,7 +26,7 @@ function Calculator() {
     function touchedEnemy() {
         var touched = false;
         enemies.forEach(function(enemy) {
-            if (isVisible(enemy) & areTouching(charDiv, enemy)) {
+            if (isVisible(enemy) && areTouching(charDiv, enemy)) {
                 touched = true;
                 return true;
             }
