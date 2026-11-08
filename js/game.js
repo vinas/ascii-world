@@ -38,8 +38,8 @@ function Game() {
 
     function gameClock() {
         if (gameOn) {
-            display.updateTime();
             timer += 1;
+            display.updateTime();
         }
         setTimeout(gameClock, 1000);
     }
