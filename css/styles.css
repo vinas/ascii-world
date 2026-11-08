@@ -55,7 +55,7 @@ html, body {
     justify-content: center; /* Horizontal center alignment */
 }
 
-#startGameImg {
+.startGameImg {
     margin-top: 11%;
     width: 40%;
     height: 42%;

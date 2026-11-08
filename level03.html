@@ -48,19 +48,19 @@
                 </div>
             </div>
         </div>
-        <div id="startGame" onclick="game.init()"><img src="img/game-start.gif" id="startGameImg" /></div>
+        <div id="startGame" onclick="game.init()"><img src="img/game-start.gif" class="startGameImg" /></div>
         <div id="gameOver" onclick="events.reset()">
-            <!--label>Estágio alcançado: </label>
-            <label id="lastStage"></label><br/>
-            <label>Tempo Total: </label>
-            <label id="gameTime"></label-->
-        </div>
-        <div id="levelScore" onclick="game.nextLevel()">
             <label>Estágio alcançado: </label>
             <label id="lastStage"></label><br/>
             <label>Tempo Total: </label>
             <label id="gameTime"></label>
-            <img src="img/game-start.gif" id="startGameImg" />
+        </div>
+        <div id="levelScore" onclick="game.nextLevel()">
+            <label>Estágio alcançado: </label>
+            <label id="levelScoreStage"></label><br/>
+            <label>Tempo Total: </label>
+            <label id="levelScoreTime"></label>
+            <img src="img/game-start.gif" class="startGameImg" />
         </div>
     </body>
     <!-- game js files begin -->

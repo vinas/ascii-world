@@ -712,8 +712,8 @@ function Display() {
     }
 
     function levelScore() {
-        document.getElementById('gameTime').innerHTML = millisToMinutesAndSeconds(gameTime);
-        document.getElementById('lastStage').innerHTML = currMap+1;
+        document.getElementById('levelScoreTime').innerHTML = millisToMinutesAndSeconds(gameTime);
+        document.getElementById('levelScoreStage').innerHTML = currMap+1;
         document.getElementById('gameElements').style.display = 'none';
         document.getElementById('levelScore').style.display = 'block';
     }
