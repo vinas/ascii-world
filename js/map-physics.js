@@ -1,138 +1,125 @@
 // How the current map's floor sections (solid / hole / liquid, at different
 // heights) constrain the player's movement, jumps and falls.
-function MapPhysics() {
+import { state } from './state.js';
+import { BASICMOVRATE, CHARBASEFLOOR, FLOORS, FLOORHORTOLERANCE, FLOORVERTTOLERANCE, JUMPHIGH } from './constants.js';
 
-    return {
-        setNewCoord,
-        setCurrentFloorIndex,
-        isUserOnWater,
-        isSteppingOnHole,
-        isOverHole,
-        shouldBeFalling,
-        jumpTop,
-        jumpFloorBase,
-        fallTarget
-    };
+export function jumpFloorBase() {
+    return FLOORS[state.mapArr[jumpFloorIndex()][2]] - FLOORVERTTOLERANCE;
+}
 
-    function jumpFloorBase() {
-        return FLOORS[mapArr[jumpFloorIndex()][2]] - FLOORVERTTOLERANCE;
+export function jumpTop() {
+    return jumpFloorBase() - JUMPHIGH;
+}
+
+function jumpFloorIndex() {
+    return (!isAllInSection() && isRightFloorHigherThanCurrent()) ? state.floorIndex + 1 : state.floorIndex;
+}
+
+// Where a fall from the current section ends (off-screen for holes)
+export function fallTarget() {
+    return (state.mapArr[state.floorIndex][3] !== 'hole') ? FLOORS[state.mapArr[state.floorIndex][2]] - FLOORVERTTOLERANCE : 120;
+}
+
+export function setNewCoord() {
+    if (state.commands.right && canMoveRight()) {
+        state.leftPos += BASICMOVRATE;
+        restrainMovement();
+        return true;
     }
-
-    function jumpTop() {
-        return jumpFloorBase() - JUMPHIGH;
+    if (state.commands.left && canMoveLeft()) {
+        state.leftPos -= BASICMOVRATE;
+        return true;
     }
+    return false;
+}
 
-    function jumpFloorIndex() {
-        return (!isAllInSection() && isRightFloorHigherThanCurrent()) ? floorIndex + 1 : floorIndex;
+export function isSteppingOnHole() {
+    return state.topPos >= CHARBASEFLOOR && isOverHole();
+}
+
+export function isOverHole() {
+    return state.mapArr[state.floorIndex][3] === 'hole'
+        && (isAllInSection() || state.mapArr[state.floorIndex + 1][3] === 'hole');
+}
+
+export function isUserOnWater() {
+    return state.mapArr[state.floorIndex][3] === 'liquid'
+        && (isAllInSection() || state.mapArr[state.floorIndex + 1]?.[3] === 'liquid');
+}
+
+function isAllInSection() {
+    return state.leftPos <= state.mapIndexArray[state.floorIndex] - FLOORHORTOLERANCE;
+}
+
+export function setCurrentFloorIndex() {
+    const idx = getFloorIndexForPos(state.leftPos);
+    if (idx !== -1) state.floorIndex = idx;
+}
+
+export function shouldBeFalling() {
+    return !state.actions.falling
+        && !state.actions.swimming
+        && !state.actions.jumping
+        && isAllInSection()
+        && state.topPos + FLOORVERTTOLERANCE < FLOORS[state.mapArr[state.floorIndex][2]];
+}
+
+function notCrossMappingToOblivion() {
+    return !(state.leftPos <= -.5 && state.currMap === 0);
+}
+
+function restrainMovement() {
+    const sectionEdge = state.mapIndexArray[state.floorIndex] - FLOORHORTOLERANCE;
+    if (!isNextRightStepOnSameFloorBase() && isRightFloorHigherThanCharTop() && state.leftPos > sectionEdge) {
+        state.leftPos = sectionEdge;
     }
+}
 
-    // Where a fall from the current section ends (off-screen for holes)
-    function fallTarget() {
-        return (mapArr[floorIndex][3] !== 'hole') ? FLOORS[mapArr[floorIndex][2]] - FLOORVERTTOLERANCE : 120;
+function canMoveRight() {
+    return (!state.actions.falling && !isAllInSection() && !isRightFloorHigherThanCharTop())
+        || isNextRightStepOnSameFloorBase()
+        || !isRightFloorHigherThanCharTop();
+}
+
+function canMoveLeft() {
+    return !state.actions.falling
+        && notCrossMappingToOblivion()
+        && (isNextLeftStepOnSameFloorBase() || !isLeftFloorHigherThanCharTop());
+}
+
+function isNextRightStepOnSameFloorBase() {
+    return state.floorIndex === getFloorIndexForPos(state.leftPos + FLOORHORTOLERANCE);
+}
+
+function isNextLeftStepOnSameFloorBase() {
+    return state.floorIndex === getFloorIndexForPos(state.leftPos - BASICMOVRATE);
+}
+
+function getFloorIndexForPos(pos) {
+    return state.mapIndexArray.findIndex(sectionEnd => pos < sectionEnd);
+}
+
+function isLeftFloorHigherThanCharTop() {
+    const currFloorBase = state.mapArr[state.floorIndex][2],
+        nextFloorBase = state.mapArr[state.floorIndex - 1][2];
+    return currFloorBase < nextFloorBase && isCharmanHigherThanNextFloor(nextFloorBase);
+}
+
+function isRightFloorHigherThanCharTop() {
+    const currFloorBase = state.mapArr[state.floorIndex] ? state.mapArr[state.floorIndex][2] : 0,
+        nextFloorBase = (state.leftPos < 95) ? state.mapArr[getFloorIndexForPos(state.leftPos + FLOORHORTOLERANCE)][2] : currFloorBase;
+    return currFloorBase < nextFloorBase && isCharmanHigherThanNextFloor(nextFloorBase);
+}
+
+function isRightFloorHigherThanCurrent() {
+    const currFloorBase = state.mapArr[state.floorIndex] ? state.mapArr[state.floorIndex][2] : 0;
+    let nextFloorBase = currFloorBase;
+    if (state.mapArr[state.floorIndex + 1] && state.leftPos < 95) {
+        nextFloorBase = state.mapArr[state.floorIndex + 1][2];
     }
+    return currFloorBase < nextFloorBase;
+}
 
-    function setNewCoord() {
-        if (commands.right && canMoveRight()) {
-            leftPos += BASICMOVRATE;
-            restrainMovement();
-            return true;
-        }
-        if (commands.left && canMoveLeft()) {
-            leftPos -= BASICMOVRATE;
-            return true;
-        }
-        return false;
-    }
-
-    function isSteppingOnHole() {
-        return topPos >= CHARBASEFLOOR && isOverHole();
-    }
-
-    function isOverHole() {
-        return mapArr[floorIndex][3] === 'hole'
-            && (isAllInSection() || mapArr[floorIndex + 1][3] === 'hole');
-    }
-
-    function isUserOnWater() {
-        return mapArr[floorIndex][3] === 'liquid'
-            && (isAllInSection() || mapArr[floorIndex + 1]?.[3] === 'liquid');
-    }
-
-    function isAllInSection() {
-        return leftPos <= mapIndexArray[floorIndex] - FLOORHORTOLERANCE;
-    }
-
-    function setCurrentFloorIndex() {
-        const idx = getFloorIndexForPos(leftPos);
-        if (idx !== -1) floorIndex = idx;
-    }
-
-    function shouldBeFalling() {
-        return !actions.falling
-            && !actions.swimming
-            && !actions.jumping
-            && isAllInSection()
-            && topPos + FLOORVERTTOLERANCE < FLOORS[mapArr[floorIndex][2]];
-    }
-
-    function notCrossMappingToOblivion() {
-        return !(leftPos <= -.5 && currMap === 0);
-    }
-
-    function restrainMovement() {
-        const sectionEdge = mapIndexArray[floorIndex] - FLOORHORTOLERANCE;
-        if (!isNextRightStepOnSameFloorBase() && isRightFloorHigherThanCharTop() && leftPos > sectionEdge) {
-            leftPos = sectionEdge;
-        }
-    }
-
-    function canMoveRight() {
-        return (!actions.falling && !isAllInSection() && !isRightFloorHigherThanCharTop())
-            || isNextRightStepOnSameFloorBase()
-            || !isRightFloorHigherThanCharTop();
-    }
-
-    function canMoveLeft() {
-        return !actions.falling
-            && notCrossMappingToOblivion()
-            && (isNextLeftStepOnSameFloorBase() || !isLeftFloorHigherThanCharTop());
-    }
-
-    function isNextRightStepOnSameFloorBase() {
-        return floorIndex === getFloorIndexForPos(leftPos + FLOORHORTOLERANCE);
-    }
-
-    function isNextLeftStepOnSameFloorBase() {
-        return floorIndex === getFloorIndexForPos(leftPos - BASICMOVRATE);
-    }
-
-    function getFloorIndexForPos(pos) {
-        return mapIndexArray.findIndex(sectionEnd => pos < sectionEnd);
-    }
-
-    function isLeftFloorHigherThanCharTop() {
-        const currFloorBase = mapArr[floorIndex][2],
-            nextFloorBase = mapArr[floorIndex - 1][2];
-        return currFloorBase < nextFloorBase && isCharmanHigherThanNextFloor(nextFloorBase);
-    }
-
-    function isRightFloorHigherThanCharTop() {
-        const currFloorBase = mapArr[floorIndex] ? mapArr[floorIndex][2] : 0,
-            nextFloorBase = (leftPos < 95) ? mapArr[getFloorIndexForPos(leftPos + FLOORHORTOLERANCE)][2] : currFloorBase;
-        return currFloorBase < nextFloorBase && isCharmanHigherThanNextFloor(nextFloorBase);
-    }
-
-    function isRightFloorHigherThanCurrent() {
-        const currFloorBase = mapArr[floorIndex] ? mapArr[floorIndex][2] : 0;
-        let nextFloorBase = currFloorBase;
-        if (mapArr[floorIndex + 1] && leftPos < 95) {
-            nextFloorBase = mapArr[floorIndex + 1][2];
-        }
-        return currFloorBase < nextFloorBase;
-    }
-
-    function isCharmanHigherThanNextFloor(nextFloorBase) {
-        return topPos + FLOORVERTTOLERANCE > FLOORS[nextFloorBase];
-    }
-
+function isCharmanHigherThanNextFloor(nextFloorBase) {
+    return state.topPos + FLOORVERTTOLERANCE > FLOORS[nextFloorBase];
 }

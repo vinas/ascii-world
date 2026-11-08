@@ -1,51 +1,42 @@
 // Renders the current map: background, floor tiles and HUD stage info.
 // Each map section is [image, 'single'|'double' width, floor height index, 'solid'|'hole'|'liquid'].
-function LevelMap() {
+import { state } from './state.js';
+import { FLOORS, SINGLEBLOCK, DOUBLEBLOCK } from './constants.js';
+import * as dom from './dom.js';
 
-    init();
+const bkgLayer = dom.el('gameBrackground');
 
-    return {
-        load,
-        hideHidables
-    };
+export function load() {
+    const maps = state.level.loadMapArr();
+    let floorPos = 0;
 
-    function init() {
-        bkgLayer = dom.el('gameBrackground');
-    }
+    dom.el('stage').innerHTML = `${state.currMap + 1} / ${maps.length}`;
+    dom.el('level').innerHTML = state.level.current;
 
-    function load() {
-        const maps = level.loadMapArr();
-        let floorPos = 0;
+    state.mapIndexArray = [];
+    state.mapArr = maps[state.currMap];
 
-        dom.el('stage').innerHTML = `${currMap + 1} / ${maps.length}`;
-        dom.el('level').innerHTML = level.current;
+    setBackgroundImg();
+    clearFloor();
 
-        mapIndexArray = [];
-        mapArr = maps[currMap];
+    state.mapArr.forEach(([image, width, floor]) => {
+        const classes = image.includes('fragile') ? `floor fragile ${width}` : `floor ${width}`;
+        bkgLayer.innerHTML += `<img class="${classes}" style="left: ${floorPos}%; top: ${FLOORS[floor]}%" src="img/map/floor/${image}" />`;
+        floorPos += (width === 'single') ? SINGLEBLOCK : DOUBLEBLOCK;
+        state.mapIndexArray.push(floorPos);
+    });
+}
 
-        setBackgroundImg();
-        clearFloor();
+// Hides every enemy/projectile/effect element (on reset and map change)
+export function hideHidables() {
+    dom.setClassProp('hidable', 'display', 'none');
+}
 
-        mapArr.forEach(([image, width, floor]) => {
-            const classes = image.includes('fragile') ? `floor fragile ${width}` : `floor ${width}`;
-            bkgLayer.innerHTML += `<img class="${classes}" style="left: ${floorPos}%; top: ${FLOORS[floor]}%" src="img/map/floor/${image}" />`;
-            floorPos += (width === 'single') ? SINGLEBLOCK : DOUBLEBLOCK;
-            mapIndexArray.push(floorPos);
-        });
-    }
+function setBackgroundImg() {
+    const image = (state.currMap % 2 === 0) ? state.level.bkgdImage1 : state.level.bkgdImage2;
+    bkgLayer.style.backgroundImage = `url('img/map/${image}')`;
+}
 
-    // Hides every enemy/projectile/effect element (on reset and map change)
-    function hideHidables() {
-        dom.setClassProp('hidable', 'display', 'none');
-    }
-
-    function setBackgroundImg() {
-        const image = (currMap % 2 === 0) ? level.bkgdImage1 : level.bkgdImage2;
-        bkgLayer.style.backgroundImage = `url('img/map/${image}')`;
-    }
-
-    function clearFloor() {
-        for (const el of [...document.getElementsByClassName('floor')]) el.remove();
-    }
-
+function clearFloor() {
+    for (const el of [...document.getElementsByClassName('floor')]) el.remove();
 }
